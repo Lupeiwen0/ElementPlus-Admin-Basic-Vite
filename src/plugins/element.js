@@ -51,6 +51,9 @@ import {
   ElCard,
   ElMenu,
   ElMenuItem,
+  ElMenuItemGroup,
+  ElSubMenu,
+  ElAvatar,
 } from 'element-plus';
 
 const components = [
@@ -100,6 +103,9 @@ const components = [
   ElBreadcrumbItem,
   ElMenu,
   ElMenuItem,
+  ElMenuItemGroup,
+  ElSubMenu,
+  ElAvatar
 ]
 
 const plugins = [

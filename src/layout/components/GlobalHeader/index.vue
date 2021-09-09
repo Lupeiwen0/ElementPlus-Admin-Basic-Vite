@@ -1,81 +1,61 @@
 <template>
-  <a-row type="flex" align="middle" justify="space-between">
-    <a-col>
-      <a-row type="flex" align="middle">
-        <a-col>
-          <a-icon
-            class="trigger"
-            :type="collapsed ? 'menu-unfold' : 'menu-fold'"
-            @click="() => $emit('update:collapsed', !collapsed)"
-          />
-        </a-col>
-        <a-col>
-          <GlobalBreadCrumb></GlobalBreadCrumb>
-        </a-col>
-      </a-row>
-    </a-col>
-    <a-col class="right-avatar">
-      <a-row type="flex" align="middle">
-        <a-col>
-          <modeSelect></modeSelect>
-        </a-col>
-        <a-col>
-          <avatar-dropdown :current-user="userInfo" />
-        </a-col>
-      </a-row>
-    </a-col>
-  </a-row>
+  <el-row type="flex" align="middle" justify="space-between" style="width: 100%;height: 100%;">
+    <el-col :span="18">
+      <el-row type="flex" align="middle">
+        <i class="trigger" :class="[props.collapsed ? 'el-icon-s-unfold' : 'el-icon-s-fold']" @click="changeCollapsed"></i>
+        <el-col :span="20">
+          <BreadCrumb></BreadCrumb>
+        </el-col>
+      </el-row>
+    </el-col>
+    <div class="right-avatar">
+      <el-row type="flex" justify="end">
+        <el-col style="width: max-content;">
+          <AvatarDropdown></AvatarDropdown>
+        </el-col>
+      </el-row>
+    </div>
+  </el-row>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import AvatarDropdown from './AvatarDropdown'
-import modeSelect from './modeSelect'
-import { GlobalBreadCrumb } from '@/components'
-
 export default {
-  name: 'GlobalHeader',
-  components: {
-    AvatarDropdown,
-    modeSelect,
-    GlobalBreadCrumb
+  name: 'GlobalHeader'
+}
+</script>
+
+<script setup>
+import { computed } from 'vue';
+import AvatarDropdown from './AvatarDropdown.vue';
+import BreadCrumb from './BreadCrumb.vue'
+
+const $emit = defineEmits(['update:collapsed'])
+const props = defineProps({
+  collapsed: {
+    type: Boolean,
+    required: true
   },
-  props: {
-    collapsed: {
-      type: Boolean,
-      required: true
-    },
-    theme: {
-      type: String,
-      required: false
-    }
-  },
-  data() {
-    return {
-      currentUser: null
-    }
-  },
-  computed: {
-    ...mapGetters(['userInfo'])
-  },
-  mounted() {}
+  theme: {
+    type: String,
+    required: false
+  }
+});
+
+const changeCollapsed = () => {
+  $emit('update:collapsed', !props.collapsed)
 }
 </script>
 
 <style lang="scss" scoped>
 .trigger {
   display: inline-block;
-  font-size: 18px;
-  padding: 0 24px;
+  font-size: 20px;
+  padding-right: 12px;
   cursor: pointer;
   transition: color 0.3s;
 }
 
 .trigger:hover {
   color: #1890ff;
-}
-
-.right-avatar {
-  margin-right: 30px;
 }
 </style>

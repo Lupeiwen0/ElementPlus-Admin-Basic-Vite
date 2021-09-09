@@ -4,8 +4,10 @@ import { domTitle, setDocumentTitle } from '@/utils/domUtil'
 // import { ACCESS_TOKEN } from '@/store/mutation-types'
 // import { debounce } from '@/utils/lodashChunk'
 
+// 白名单、以及公共不缓存的页面
 export const allowList = [
   'Redirect',
+  'Redirect-view',
   'user',
   'user-login',
   'exception',
@@ -16,7 +18,7 @@ export const allowList = [
 ]
 
 // const loginRoutePath = '/user/login'
-// const defaultRoutePath = '/dashboard'
+export const defaultRoutePath = '/dashboard'
 
 // 创建路由守卫
 export function createRouterGuards(router) {

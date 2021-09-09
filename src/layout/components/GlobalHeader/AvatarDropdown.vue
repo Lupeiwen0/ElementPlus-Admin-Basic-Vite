@@ -1,75 +1,84 @@
 <template>
-  <a-dropdown placement="bottomRight">
+  <el-dropdown placement="bottom-end" trigger="click" @command="handleCommand($event)">
     <span class="account-avatar">
-      <a-avatar size="small" :src="currentUser.avatar" class="avatar__view" />
-      <span class="user__name">{{ currentUser.name }}</span>
-      <a-icon type="down" />
+      <el-avatar size="small" :src="currentUser.avatar" class="avatar__view" />
+      <span class="user__name">{{ currentUser.name || '来自星星的你~' }}</span>
+      <i class="el-icon-arrow-down"></i>
     </span>
-    <template v-slot:overlay>
-      <a-menu class="ant-pro-drop-down">
-        <a-menu-item key="logout" @click="handleLogout">
-          <a-icon type="logout" />退出登录
-        </a-menu-item>
-      </a-menu>
+    <template #dropdown>
+      <el-dropdown-item command="1" icon="el-icon-user">退出登录</el-dropdown-item>
     </template>
-  </a-dropdown>
+  </el-dropdown>
 </template>
 
 <script>
-import { Modal } from 'ant-design-vue'
-import { TabsViewMutationType } from '@/store/modules/tabsView'
-
 export default {
   name: 'AvatarDropdown',
-  props: {
-    currentUser: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
-  },
-  data() {
-    return {}
-  },
-  mounted() { },
-  methods: {
-    handleLogout() {
-      Modal.confirm({
-        title: '您确定退出么？',
-        onOk: () => {
-          return this.$store.dispatch('user/Logout').then(() => {
-            this.$router.push({ name: 'login' })
-            this.$store.commit(`tabsView/${TabsViewMutationType.CloseAllTabs}`)
-          })
-        },
-        onCancel() { }
-      })
+}
+</script>
+
+<script setup>
+import { ElMessageBox } from 'element-plus'
+import { useStore } from '@/store'
+import { useRouter } from 'vue-router'
+import { TabsViewMutationType } from '@/store/modules/tabs/mutations'
+
+defineProps({
+  currentUser: {
+    type: Object,
+    default: () => {
+      return {}
     }
   }
+});
+
+const $store = useStore()
+const $router = useRouter()
+
+const handleCommand = (type) => {
+  switch (type) {
+    case '1':
+      handleLogout()
+      break;
+  }
+}
+
+// 退出登录
+const handleLogout = () => {
+  ElMessageBox.confirm('您确定要退出登录吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).then(res => {
+    // $store.dispatch('user/Logout').then(() => {
+    //   $router.push({ name: 'login' })
+    //   $store.commit(`tabs/${TabsViewMutationType.CloseAllTabs}`)
+    // })
+  })
 }
 </script>
 
 <style lang="scss" scoped>
-.ant-pro-drop-down {
-  /deep/ .action {
-    margin-right: 8px;
-  }
-  /deep/ .ant-dropdown-menu-item {
-    min-width: 160px;
-  }
-}
 .avatar__view {
   margin-right: 10px;
 }
 .user__name {
+  display: inline-block;
+  max-width: 100px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   margin-right: 4px;
+  overflow: hidden;
 }
 .account-avatar {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   height: 100%;
   padding: 0 12px;
   cursor: pointer;
+}
+.account-avatar:focus-visible {
+  outline: none;
 }
 .account-avatar:hover {
   background-color: rgba(0, 0, 0, 0.025);

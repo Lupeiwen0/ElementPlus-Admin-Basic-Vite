@@ -1,6 +1,6 @@
 
 import Dashboard from './modules/dashboard'
-import TableSchema from './modules/table-schema'
-import FormSchema from './modules/form-schema'
+import Redirect from './modules/redirect'
+import Demo from './modules/demo'
 
-export default [...Dashboard, ...TableSchema, ...FormSchema]
+export default [...Redirect, ...Dashboard, ...Demo]

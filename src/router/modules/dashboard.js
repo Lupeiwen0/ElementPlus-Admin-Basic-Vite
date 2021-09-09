@@ -10,17 +10,19 @@ const routes = [
     component: RouteTransition,
     meta: {
       title: '首页',
-      icon: 'dashboard',
+      icon: 'el-icon-discover',
       permission: ['dashboard'],
+      target: 'menuItem'
     },
     children: [
       {
         path: '/dashboard-view',
         name: `${routeName}-view`,
         meta: {
-          title: '首页',
+          title: '首页-view',
           permission: ['dashboard'],
           keepAlive: true,
+          target: 'sonMenu'
         },
         component: () => import('@/views/dashboard/dashboard.vue')
       }

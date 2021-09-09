@@ -9,18 +9,6 @@
       Edit
       <code>components/HelloWorld.vue</code> to test hot module replacement.
     </p>
-    <el-row type="flex" justify="center">
-      <el-col :span="2">
-        <router-link :to="{ path: '/table-schema' }">
-          <el-button type="text">To Table</el-button>
-        </router-link>
-      </el-col>
-      <el-col :span="2">
-        <router-link :to="{ path: '/form-schema' }">
-          <el-button type="text">To Form</el-button>
-        </router-link>
-      </el-col>
-    </el-row>
 
     <el-row type="flex" justify="center">
       <UploadFile v-model:modelValue="fileList" drag>

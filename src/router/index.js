@@ -8,6 +8,7 @@ export const routes = [
     path: '/',
     name: 'Layout',
     redirect: '/dashboard',
+    meta: { title: '首页' },
     component: () => import('@/layout/BasicLayout.vue'),
     children: common
   }

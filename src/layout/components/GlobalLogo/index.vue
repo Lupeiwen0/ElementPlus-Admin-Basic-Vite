@@ -1,47 +1,52 @@
 <template>
-  <a href="javascript:;" class="logo" @click="backHome">
+  <a href="javascript:;" class="logo" :style="logoStyle" @click="backHome">
     <img :src="logoImg" class="logo__img" />
-    <span class="logo__text" :style="logoStyle">{{ title }}</span>
+    <span v-show="!props.collapsed" class="logo__text" >{{ title }}</span>
   </a>
 </template>
 
 <script>
-import Logo from '@/assets/logo.svg'
 export default {
-  props: {
-    title: {
-      type: String,
-      default: 'Ant Design Basic'
-    },
-    theme: {
-      type: String,
-      default: 'dark'
-    }
+  name: 'GlobalLogo'
+}
+</script>
+
+<script setup>
+import { computed } from 'vue';
+import { useRouter } from 'vue-router'
+import Logo from '@/assets/logo.png'
+
+const props = defineProps({
+  title: {
+    type: String,
+    default: 'Element Plus Admin'
   },
-  data() {
-    return {
-      logoImg: Logo
-    }
+  collapsed: {
+    type: Boolean
   },
-  computed: {
-    logoStyle() {
-      let style = ''
-      switch (this.theme) {
-        case 'dark':
-          style = 'color: #fff;'
-          break
-        case 'light':
-          style = 'color: rgba(0, 0, 0, 0.65);'
-          break
-      }
-      return style
-    }
-  },
-  methods: {
-    backHome() {
-      this.$router.push({ path: '/' })
-    }
+  theme: {
+    type: String,
+    default: 'dark'
   }
+});
+const $router = useRouter()
+
+const logoImg = Logo
+const logoStyle = computed(() => {
+  let style = ''
+  switch (props.theme) {
+    case 'dark':
+      style = 'color:#fff;background-color:#001628;'
+      break
+    case 'light':
+      style = 'color:rgba(0, 0, 0, 0.65);background-color:#ff;'
+      break
+  }
+  return style
+})
+
+const backHome = () => {
+  $router.push({ path: '/' })
 }
 </script>
 
@@ -51,12 +56,13 @@ export default {
   flex-wrap: wrap;
   align-items: center;
   height: 64px;
-  padding-left: 24px;
+  padding-left: 18px;
   overflow: hidden;
   position: relative;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   line-height: 64px;
+  text-decoration: none;
 
   .logo__img {
     height: 32px;
@@ -65,8 +71,11 @@ export default {
   }
 
   .logo__text {
-    color: #fff;
+    flex: 1;
     font-size: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     margin: 0 0 0 12px;
   }
 }

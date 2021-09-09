@@ -1,11 +1,11 @@
 <template>
   <BasicCard title="Table Schema">
     <template #extra>
-      <el-button type="text" @click="$router.back">back</el-button>
+      <el-button type="text">more</el-button>
     </template>
 
     <SchemaMenuBar :barList="barList"></SchemaMenuBar>
-    
+
     <SchemaTable
       :ref="setSchemaTableRef"
       autoHeight
