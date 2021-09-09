@@ -48,10 +48,7 @@ export default {
     // form ref
     const SchemaFormRef = ref(null)
     const setSchemaFormRef = el => SchemaFormRef.value = el
-    // 合并初始化数据
-    // const localFields = ref({})
-    // if (props.fields) localFields.value = Object.assign({}, props.fields)
-
+    
     // 过滤本地显示数据
     const localFormSchema = props.formSchema.filter(item => !item.hidden)
     // 预设组件索引

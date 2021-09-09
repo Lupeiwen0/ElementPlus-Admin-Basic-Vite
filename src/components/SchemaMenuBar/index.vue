@@ -1,6 +1,6 @@
 <template>
   <div class="schema__menu__bar__cantainer" :style="laoutStyle">
-    <template v-for="(item, index) in props.barList">
+    <template v-for="(item, index) in localBarList">
       <div class="menu__bar__item">
         <el-button size="small" v-bind="item.attr" @click.stop="clickHandler(item, index)">{{ item.label }}</el-button>
       </div>
@@ -16,6 +16,16 @@ export default {
 
 <script setup>
 import { computed } from 'vue'
+
+// interface barItem {
+//   label: String
+//   hidden?: Boolean
+//   attr?: Attribute<ElButton>
+//   targetMethod: () => void
+// }
+
+// interface barList: barItem[]
+
 const props = defineProps({
   barList: {
     type: Array,
@@ -47,6 +57,8 @@ const laoutStyle = computed(() => {
   }
   return style
 })
+
+const localBarList = computed(() => props.barList.filter(item => !item.hidden))
 
 const clickHandler = (info, index) => {
   info.targetMethod && info.targetMethod()

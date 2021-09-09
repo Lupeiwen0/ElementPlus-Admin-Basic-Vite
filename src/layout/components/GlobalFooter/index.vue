@@ -1,7 +1,7 @@
 <template>
   <!-- footer组件高度变化 要修改 src/components/tabs/tabs-view.vue 文件 .tabs-view-content 样式的高度 -->
   <div class="global__footer">
-    Element-Plus Basic Admin ©2021 Created by Lu Xi
+    Element-Plus Admin Basic ©2021 Created by Lu xi
   </div>
 </template>
 

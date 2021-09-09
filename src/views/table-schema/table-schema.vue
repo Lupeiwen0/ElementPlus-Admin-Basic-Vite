@@ -179,7 +179,6 @@ const loadData = parameter => {
     console.log(res.data);
     return res.data
   })
-  // return axios(Object.assign({}, queryInfo.value, parameter))
 }
 /**
  * FormState 定义表单数据
@@ -216,7 +215,6 @@ watch(() => FormState.fileds.gender, (newVal) => {
 
 // showFormmodal
 const showFormModal = (params) => {
-
   useFormModal({
     title: params.title,
     width: 1200,
@@ -257,8 +255,6 @@ const initHandler = () => {
   const list = [{ id: 102 }, { id: 106 }]
   STableRef.value.initRowSelection(list)
 }
-
-
 
 const expandHandler = (expandedRows, expanded) => {
   console.log('expandHandler', { expandedRows, expanded });

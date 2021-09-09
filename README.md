@@ -1,23 +1,41 @@
 # Element-plus-Vue3-Vite
 
 #### 介绍
-使用Element-plus + Vue3 + Vite 搭建的后台Pc模板，对Table进行封装，集成hooks表单
+
+使用 Element-plus + Vue3 + Vite 搭建的后台 Pc 模板，
+对 Table 进行封装，集成 hooks 表单
+使用Mock模拟请求数据
 
 #### 软件架构
-软件架构说明
 
+1. vite
+2. vue3
+3. vuex
+4. vue-router
+5. Element-plus
+6. mock
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+node version >= 12.0.0
+
+```
+ yarn add
+```
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  开发环境运行
+
+```
+ yarn run dev
+```
+
+2.  打包
+
+```
+yarn run build
+```
 
 #### 参与贡献
 
@@ -25,13 +43,3 @@
 2.  新建 Feat_xxx 分支
 3.  提交代码
 4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)

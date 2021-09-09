@@ -1,6 +1,6 @@
 {
   "name": "vite-element-plus",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -14,19 +14,22 @@
     "mockjs": "^1.1.0",
     "nprogress": "^1.0.0-1",
     "qs": "^6.10.1",
-    "vue": "^3.2.7",
+    "vue": "^3.2.11",
     "vue-router": "^4.0.11",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-legacy": "^1.5.1",
-    "@vitejs/plugin-vue": "^1.3.0",
-    "@vitejs/plugin-vue-jsx": "^1.1.7",
-    "@vue/compiler-sfc": "^3.2.7",
+    "@vitejs/plugin-legacy": "^1.5.3",
+    "@vitejs/plugin-vue": "^1.6.2",
+    "@vitejs/plugin-vue-jsx": "^1.1.8",
+    "@vue/compiler-sfc": "^3.2.11",
     "element-plus": "^1.1.0-beta.9",
     "sass": "^1.37.5",
-    "vite": "^2.5.0",
+    "vite": "^2.5.6",
     "vite-plugin-element-plus": "^0.0.12",
-    "vite-plugin-style-import": "^1.1.1"
+    "vite-plugin-style-import": "^1.2.1"
+  },
+  "engines": {
+    "node": ">= 12.0.0"
   }
 }
