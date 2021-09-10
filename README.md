@@ -12,8 +12,9 @@
 2. vue3
 3. vuex
 4. vue-router
-5. Element-plus
-6. mock
+5. axios
+6. Element-plus
+7. mock
 
 #### 安装教程
 

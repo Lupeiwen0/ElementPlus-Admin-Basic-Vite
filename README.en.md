@@ -1,36 +1,42 @@
 # Element-plus-Vue3-Vite
 
 #### Description
-使用Element-plus + Vue3 + Vite 搭建的后台Pc模板，对Table进行封装，集成hooks表单
+
+The background PC template built by element plus + vue3 + vite,
+
+Encapsulate the table and integrate the hooks form
+
+Mock request data using mock
 
 #### Software Architecture
-Software architecture description
+
+1. vite
+2. vue3
+3. vuex
+4. vue-router
+5. axios
+6. Element-plus
+7. mock
 
 #### Installation
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+node version >= 12.0.0
+
+```
+ yarn add
+```
 
 #### Instructions
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
 
-#### Contribution
+1.  开发环境运行
 
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
+```
+ yarn run dev
+```
 
+2.  打包
 
-#### Gitee Feature
-
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+```
+yarn run build
+```

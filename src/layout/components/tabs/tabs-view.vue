@@ -13,12 +13,14 @@
                 >
                   <div style="display: inline-block;">{{ pageItem.meta?.title }}</div>
                   <template #dropdown>
-                    <el-dropdown-item command="1" icon="el-icon-refresh-right">刷新</el-dropdown-item>
-                    <el-dropdown-item command="2" icon="el-icon-minus">关闭</el-dropdown-item>
-                    <el-dropdown-item command="3" icon="el-icon-d-arrow-left">关闭左侧</el-dropdown-item>
-                    <el-dropdown-item command="4" icon="el-icon-d-arrow-right">关闭右侧</el-dropdown-item>
-                    <el-dropdown-item command="5" icon="el-icon-finished">关闭其他</el-dropdown-item>
-                    <el-dropdown-item command="6" icon="el-icon-circle-close">关闭全部</el-dropdown-item>
+                    <el-dropdown-menu>
+                      <el-dropdown-item command="1" icon="el-icon-refresh-right">刷新</el-dropdown-item>
+                      <el-dropdown-item command="2" icon="el-icon-minus">关闭</el-dropdown-item>
+                      <el-dropdown-item command="3" icon="el-icon-d-arrow-left">关闭左侧</el-dropdown-item>
+                      <el-dropdown-item command="4" icon="el-icon-d-arrow-right">关闭右侧</el-dropdown-item>
+                      <el-dropdown-item command="5" icon="el-icon-finished">关闭其他</el-dropdown-item>
+                      <el-dropdown-item command="6" icon="el-icon-circle-close">关闭全部</el-dropdown-item>
+                    </el-dropdown-menu>
                   </template>
                 </el-dropdown>
               </template>
@@ -31,9 +33,11 @@
         <el-dropdown trigger="click" placement="bottom-end" @command="handleCommand($event)">
           <i class="el-icon-more-outline tabs__header__more"></i>
           <template #dropdown>
-            <el-dropdown-item command="2" icon="el-icon-minus">关闭</el-dropdown-item>
-            <el-dropdown-item command="5" icon="el-icon-finished">关闭其他</el-dropdown-item>
-            <el-dropdown-item command="6" icon="el-icon-circle-close">关闭全部</el-dropdown-item>
+            <el-dropdown-menu>
+              <el-dropdown-item command="2" icon="el-icon-minus">关闭</el-dropdown-item>
+              <el-dropdown-item command="5" icon="el-icon-finished">关闭其他</el-dropdown-item>
+              <el-dropdown-item command="6" icon="el-icon-circle-close">关闭全部</el-dropdown-item>
+            </el-dropdown-menu>
           </template>
         </el-dropdown>
       </div>
