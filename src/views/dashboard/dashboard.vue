@@ -10,6 +10,12 @@
       <code>components/HelloWorld.vue</code> to test hot module replacement.
     </p>
 
+    <p>
+      <el-icon color="#409EFF" :size="28">
+        <switch-button />
+      </el-icon>
+    </p>
+
     <el-row type="flex" justify="center">
       <UploadFile v-model:modelValue="fileList" drag>
         <i class="el-icon-upload"></i>
@@ -33,6 +39,7 @@ export default {
 
 <script setup>
 import { ref, watchEffect } from 'vue'
+import { SwitchButton } from '@element-plus/icons'
 import { UploadFile } from '@/components'
 
 const fileList = ref([])

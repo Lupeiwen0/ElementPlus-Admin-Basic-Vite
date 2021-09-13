@@ -6,16 +6,18 @@ const routes = [
   {
     path: '/redirect/:path*',
     name: routeName,
-    hidden: true,
     component: RouteTransition,
     meta: {
-      title: '刷新'
+      title: '刷新',
+      hidden: true,
     },
     children: [
       {
         path: '',
         name: `${routeName}-view`,
-        hidden: true,
+        meta: {
+          hidden: true,
+        },
         component: () => import('@/views/redirect/index.vue')
       }
     ]

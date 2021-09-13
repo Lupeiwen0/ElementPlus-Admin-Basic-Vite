@@ -14,20 +14,20 @@ export default {
       default: 'dark'
     }
   },
-  data() {
+  data () {
     return {
       selectedKeys: '',
       openKeys: []
     }
   },
   computed: {
-    menus() {
+    menus () {
       return routes[0]?.children || []
     }
   },
   watch: {
     $route: {
-      handler(value) {
+      handler (value) {
         // sonMenu 一级菜单的重定向子页面
         this.selectedKeys =
           value.meta?.target === 'sonMenu' ? value.matched[1].path : value.path
@@ -36,7 +36,7 @@ export default {
       },
       immediate: true
     },
-    collapsed(newVal) {
+    collapsed (newVal) {
       // 菜单监听收缩转台，改变菜单选中选项打开状态
       if (newVal) {
         this.openKeys = []
@@ -46,9 +46,9 @@ export default {
     }
   },
   methods: {
-    jumpRoute(path, target) {
+    jumpRoute (path, target) {
       // 判断是否是外部链接跳转
-      if (target && target === '_blank' && path) {
+      if (target === '_blank' && path) {
         window.open(path)
       } else {
         if (this.$route.path === path) return
@@ -56,7 +56,7 @@ export default {
       }
     },
   },
-  render() {
+  render () {
     const renderIcon = (icon) => {
       if (typeof icon === 'string') {
         return (<i class={icon}></i>)
@@ -69,8 +69,9 @@ export default {
     const renderChildren = list => {
       const vnode = []
       list.forEach(child => {
-        if (child.hidden) return
-        if (child.meta && (child.meta.target === 'menuItem' || !child.children || !child.children.length)) {
+        // 没有meta配置 或 hidden 为 true 的不渲染菜单
+        if (!child.meta || child.meta.hidden) return
+        if (child.meta.target === 'menuItem' || !child.children || !child.children.length) {
           // 菜单不包含子集 - meta有配置，则这是一个菜单项
           vnode.push(
             h(
@@ -85,7 +86,7 @@ export default {
               }
             )
           )
-        } else if (child.meta && child.children && child.children.length) {
+        } else if (child.children && child.children.length) {
           // 判断菜单是否是隐藏菜单 - 如果不是隐藏菜单 进行菜单渲染
           //  判断当前菜单是否含有meta配置
           //  是否含有子集?

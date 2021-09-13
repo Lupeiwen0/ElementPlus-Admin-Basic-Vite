@@ -11,7 +11,7 @@
       :form-schema="dynamicForm"
       :label-width="120"
     ></SchemaForm>
-    <el-row type="flex" :gutter="10" justify="end">
+    <el-row type="flex" :gutter="10" justify="end" style="margin-bottom: 20px;">
       <el-col :span="2">
         <el-button type="primary" @click="restHandler">重置</el-button>
       </el-col>

@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
+    "build:preview": "vite build --mode preview",
+    "build:release": "vite build --mode production"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -16,9 +16,11 @@
     "qs": "^6.10.1",
     "vue": "^3.2.11",
     "vue-router": "^4.0.11",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "wangeditor": "^4.7.8"
   },
   "devDependencies": {
+    "@element-plus/icons": "^0.0.11",
     "@vitejs/plugin-legacy": "^1.5.3",
     "@vitejs/plugin-vue": "^1.6.2",
     "@vitejs/plugin-vue-jsx": "^1.1.8",

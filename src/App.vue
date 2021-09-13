@@ -12,22 +12,7 @@ const locale = zhCn
 </script>
 
 <style lang="scss">
-* {
-  margin: 0;
-  padding: 0;
-}
-div,
-p,
-ul,
-li,
-ol,
-section,
-header,
-footer {
-  box-sizing: border-box;
-}
-
-@import "./plugins/element-fix.scss";
+@import "./style/global.scss";
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

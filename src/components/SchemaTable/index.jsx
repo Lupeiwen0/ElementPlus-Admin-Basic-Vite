@@ -1,9 +1,10 @@
 import T from "element-plus/lib/components/table";
-import $lodash from "lodash";
+import { cloneDeep, debounce } from "lodash";
 import { ElLoading } from "element-plus";
 import { h, resolveComponent } from "vue";
 
 let TableLoadingInstance = null;
+
 export default {
   name: "SchemaTable",
   data() {
@@ -24,6 +25,7 @@ export default {
         },
         this.pagination
       ),
+      autoScrollHeight: "400px", // table 滚动高度
     };
   },
   props: Object.assign({}, T.props, {
@@ -107,6 +109,15 @@ export default {
   },
   created() {
     this.loadData();
+  },
+  mounted() {
+    if (this.autoHeight) {
+      this.getTableScrollHeight();
+      window.addEventListener("resize", this.getTableScrollHeight);
+    }
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.getTableScrollHeight);
   },
   methods: {
     /**
@@ -204,6 +215,24 @@ export default {
       this.localPagination.pageSize = pageSize;
       this.loadData();
     },
+    // 获取table高度
+    getTableScrollHeight: debounce(
+      function () {
+        this.$nextTick(() => {
+          const tableRect = document
+            .querySelector(".table-wrapper")
+            ?.getBoundingClientRect();
+          const footerRect = document
+            .querySelector(".el-footer")
+            .getBoundingClientRect();
+          this.autoScrollHeight = `calc(100vh - ${
+            tableRect.top + footerRect.height + 52
+          }px)`;
+        });
+      },
+      800,
+      { leading: true }
+    ),
   },
   render() {
     const props = {};
@@ -222,7 +251,7 @@ export default {
     });
 
     // 初始化local配置
-    const localColumns = $lodash.cloneDeep(this.columns);
+    const localColumns = cloneDeep(this.columns);
     // 添加索引序号
     if (this.index) {
       localColumns.unshift({
@@ -273,7 +302,7 @@ export default {
       <el-table
         style="width: 100%;"
         ref="ElTableRef"
-        max-height={this.autoHeight ? "500px" : "auto"}
+        max-height={this.autoHeight ? this.autoScrollHeight : "auto"}
         {...props}
         onExpandChange={(expandedRows, expanded) => {
           // 展开行

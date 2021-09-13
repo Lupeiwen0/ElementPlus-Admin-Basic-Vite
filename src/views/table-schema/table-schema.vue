@@ -56,14 +56,6 @@ const $router = useRouter()
  */
 const barList = ref([
   {
-    label: '返 回',
-    attr: {
-      type: 'warning',
-      icon: 'el-icon-arrow-left'
-    },
-    targetMethod: () => $router.back()
-  },
-  {
     label: '新 增',
     attr: {
       type: 'primary',

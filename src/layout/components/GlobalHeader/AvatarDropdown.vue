@@ -6,7 +6,10 @@
       <i class="el-icon-arrow-down"></i>
     </span>
     <template #dropdown>
-      <el-dropdown-item command="1" icon="el-icon-user">退出登录</el-dropdown-item>
+      <el-dropdown-menu>
+        <el-dropdown-item command="1" icon="el-icon-user">修改信息</el-dropdown-item>
+        <el-dropdown-item command="2" icon="el-icon-user">退出登录</el-dropdown-item>
+      </el-dropdown-menu>
     </template>
   </el-dropdown>
 </template>
@@ -38,6 +41,9 @@ const $router = useRouter()
 const handleCommand = (type) => {
   switch (type) {
     case '1':
+
+      break;
+    case '2':
       handleLogout()
       break;
   }

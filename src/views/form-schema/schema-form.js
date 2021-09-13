@@ -1,5 +1,5 @@
 import { createVNode } from "vue"
-import UploadFile from "@/components/UploadFile/UploadFile.vue"
+import { UploadFile, WangEditor } from "@/components/index"
 
 export const getFormSchema = () => ([
   {
@@ -181,5 +181,11 @@ export const getFormSchema = () => ([
     type: createVNode(UploadFile, { listType: 'text', multiple: true }),
     props: { label: '本人生活照' },
     layout: { span: 24 }
-  }
+  },
+  {
+    field: 'selfDesc',
+    type: createVNode(WangEditor, { height: 500 }),
+    props: { label: '个人介绍' },
+    layout: { span: 24 }
+  },
 ])

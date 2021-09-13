@@ -9,15 +9,12 @@ const CWD = process.cwd()
 
 export default ({ command, mode }) => {
   // 环境变量
-  const { VITE_BASE_URL } = loadEnv(mode, CWD)
+  const { VITE_BASE_URL, VITE_APP_OUT_DIR } = loadEnv(mode, CWD)
 
   // const isBuild = command === 'build';
 
   return {
     base: VITE_BASE_URL,
-    esbuild: {
-      // target: 'es2015'
-    },
     resolve: {
       alias: [
         {
@@ -61,7 +58,7 @@ export default ({ command, mode }) => {
       exclude: []
     },
     build: {
-      outDir: 'dist',
+      outDir: VITE_APP_OUT_DIR,
       assetsDir: 'assets',
       terserOptions: {
         compress: {
