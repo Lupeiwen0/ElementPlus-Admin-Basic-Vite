@@ -8,11 +8,11 @@
 
     <SchemaTable
       :ref="setSchemaTableRef"
-      autoHeight
-      :fixed="['index', 'selection', 'expand']"
       index
       expand
       rowKey="id"
+      autoHeight
+      :fixed="['index', 'selection', 'expand']"
       :data="loadData"
       :columns="columns"
       :rowSelection="onSelectChange"
@@ -20,6 +20,9 @@
       @filter-change="onFilterChange"
       @row-click="onRowClick"
     >
+      <template #actionHeader>
+        <el-input size="mini" placeholder="请输入关键字" v-model="queryInfo.action"></el-input>
+      </template>
       <template #action="scope">
         <el-button type="text" @click.stop="editHandler(scope.row)">编辑</el-button>
         <el-divider direction="vertical"></el-divider>
@@ -43,13 +46,13 @@ export default {
 </script>
 
 <script setup>
-import { reactive, ref, watch } from 'vue'
+import { reactive, ref } from 'vue'
 import { SchemaTable, SchemaMenuBar, BasicCard } from '@/components'
-import { useFormModal } from '@/hooks'
-import { getFormSchema } from './schema-form'
-import { useRouter } from 'vue-router'
+import { cloneDeep } from 'lodash'
+import { ElMessage } from 'element-plus'
 import { getTableList } from '@/api/table-list'
-const $router = useRouter()
+// 引入表单配置及方法
+import { FormState, showFormModal } from './schema-form'
 
 /**
  * 菜单按钮
@@ -81,12 +84,11 @@ const barList = ref([
   }
 ])
 
-
 // 表格 ref
 const STableRef = ref(null)
 const setSchemaTableRef = (el) => STableRef.value = el
 
-const queryInfo = ref({}) // 搜索数据
+const queryInfo = reactive({}) // 搜索数据
 const selectedRows = ref([]) // 选中行数据
 // 表格列 配置项
 const columns = [
@@ -110,7 +112,7 @@ const columns = [
     width: 80,
     label: '年龄',
     prop: 'age',
-    align: 'center',
+    align: 'center'
   }, {
     width: 80,
     label: '身高',
@@ -137,19 +139,14 @@ const columns = [
     prop: 'single',
     align: 'center',
   }, {
-    width: 80,
+    width: 120,
     label: '有无恋爱经验',
     prop: 'loveHistory',
     align: 'center',
   }, {
-    width: 80,
+    width: 120,
     label: '主要经济来源',
     prop: 'occupation',
-    align: 'center',
-  }, {
-    width: 120,
-    label: '兴趣爱好',
-    prop: 'like',
     align: 'center',
   }, {
     label: '简介',
@@ -162,67 +159,16 @@ const columns = [
     label: '操作',
     prop: 'gender',
     align: 'center',
-    slots: { customRender: 'action' },
+    slots: { customRender: 'action', customHeader: 'actionHeader' },
   }
 ]
 // 加载数据
 const loadData = parameter => {
-  return getTableList(Object.assign({}, queryInfo.value, parameter)).then(res => {
+  return getTableList(Object.assign({}, queryInfo, parameter)).then(res => {
     return res.data
   })
 }
-/**
- * FormState 定义表单数据
- * fileds 表单数据
- * rules 校验规则
- */
-let FormState = reactive({
-  fileds: {},
-  rules: {
-    name: [{ required: true, message: '请输入姓名', trigger: ['blur'] }],
-    gender: [{ required: true, message: '请选择性别', trigger: ['change'] }],
-    age: [
-      { required: false, message: '请输入年龄', trigger: ['change'] },
-      { pattern: /^\d{1,}$/, message: '只能输入正整数', trigger: ['change'] }
-    ]
-  }
-})
-/**
- * 重置表单信息
- */
-const resetFormState = () => {
-  FormState.fileds = {}
-}
-/**
- * 动态改变校验规则
- */
-watch(() => FormState.fileds.gender, (newVal) => {
-  if (newVal === 1) {
-    FormState.rules.age[0].required = false
-  } else {
-    FormState.rules.age[0].required = true
-  }
-})
 
-// showFormmodal
-const showFormModal = (params) => {
-  useFormModal({
-    title: params.title,
-    width: 1200,
-    formAttr: { labelWidth: 100, },
-    formSchema: getFormSchema(),
-    fields: params.fields,
-    rules: FormState.rules,
-    handleOk: (modelRef) => {
-      return new Promise(resolve => {
-        console.log(modelRef);
-        resetFormState()
-        resolve()
-      })
-    },
-    closed: () => resetFormState()
-  })
-}
 // 新增事件
 const addhandler = () => {
   showFormModal({ title: '新 增', fields: FormState.fileds })
@@ -230,8 +176,14 @@ const addhandler = () => {
 
 // 编辑事件
 const editHandler = (row) => {
-  console.log('editHandler: ', row)
-  showFormModal({ title: '编 辑', fields: row })
+  FormState.fileds = cloneDeep(row)
+  showFormModal(
+    { title: '编 辑', fields: FormState.fileds },
+    () => {
+      ElMessage.success('操作成功')
+      STableRef.value.refresh()
+    }
+  )
 }
 // 删除事件
 const delHandler = (row) => {

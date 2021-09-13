@@ -110,6 +110,9 @@ export default {
   created() {
     this.loadData();
   },
+  activated() {
+    if (this.autoHeight) this.getTableScrollHeight();
+  },
   mounted() {
     if (this.autoHeight) {
       this.getTableScrollHeight();
@@ -226,6 +229,8 @@ export default {
           const footerRect = document
             .querySelector(".el-footer")
             .getBoundingClientRect();
+
+          if (!tableRect) return;
           // 52 是 分页器高度
           this.autoScrollHeight = `${
             windowClintHeight - tableRect.top - footerRect.height - 52
@@ -259,8 +264,9 @@ export default {
       localColumns.unshift({
         type: "index",
         width: "50",
+        align: "center",
+        label: "#",
         fixed: this.fixed.includes("index"),
-        renderHeader: () => "#",
       });
     }
     // 添加选择项
@@ -283,17 +289,20 @@ export default {
 
     // 表格Columns
     const tableColumns = localColumns.map((item) => {
-      if (item.slots && item.slots.customRender) {
+      if (item.slots) {
         const TableColumn = resolveComponent("ElTableColumn");
-        return h(
-          TableColumn,
-          { ...item },
-          {
-            default: (props) => {
-              return this.$slots[item.slots.customRender](props);
-            },
-          }
-        );
+        const slots = {};
+        if (item.slots.customRender) {
+          slots["default"] = (props) => {
+            return this.$slots[item.slots.customRender](props);
+          };
+        }
+        if (item.slots.customHeader) {
+          slots["header"] = (props) => {
+            return this.$slots[item.slots.customHeader](props);
+          };
+        }
+        return h(TableColumn, { ...item }, slots);
       } else {
         return <el-table-column {...item}></el-table-column>;
       }

@@ -59,7 +59,6 @@ watch(() => fields.value.gender, (newV) => {
   }
 })
 
-
 const confirmHandler = () => {
   SchemaFormRef.value.validate((valid, form) => {
     console.log(valid, form);

@@ -1,7 +1,9 @@
-import { createVNode } from "vue"
-import UploadFile from "@/components/UploadFile/UploadFile.vue"
+import { createVNode, reactive, watch } from "vue"
+import { UploadFile } from "@/components/index"
+import { useFormModal } from '@/hooks'
 
-export const getFormSchema = () => ([
+// 表单配置数据
+const getFormSchema = () => ([
   {
     field: 'name',
     type: 'input',
@@ -172,7 +174,7 @@ export const getFormSchema = () => ([
     props: { label: '简介' },
     layout: { span: 24 },
     attr: {
-      maxLength: 30,
+      maxLength: 1000,
       placeholder: '请输入内容'
     }
   },
@@ -183,3 +185,54 @@ export const getFormSchema = () => ([
     layout: { span: 24 }
   }
 ])
+/**
+ * FormState 定义表单数据
+ * fileds 表单数据
+ * rules 校验规则
+ */
+export const FormState = reactive({
+  fileds: {},
+  rules: {
+    name: [{ required: true, message: '请输入姓名', trigger: ['blur'] }],
+    gender: [{ required: true, message: '请选择性别', trigger: ['change'] }],
+    age: [
+      { required: false, message: '请输入年龄', trigger: ['change'] },
+      { pattern: /^\d{1,}$/, message: '只能输入正整数', trigger: ['change'] }
+    ]
+  }
+})
+/**
+ * 重置表单信息
+ */
+const resetFormState = () => {
+  FormState.fileds = {}
+}
+/**
+ * 动态改变校验规则
+ */
+watch(() => FormState.fileds.gender, (newVal) => {
+  if (newVal === 1) {
+    FormState.rules.age[0].required = false
+  } else {
+    FormState.rules.age[0].required = true
+  }
+})
+// showFormModal
+export const showFormModal = (params, callback) => {
+  useFormModal({
+    title: params.title,
+    width: 1200,
+    formAttr: { labelWidth: 100, },
+    formSchema: getFormSchema(),
+    fields: params.fields,
+    rules: FormState.rules,
+    handleOk: (modelRef) => {
+      return new Promise(resolve => {
+        resetFormState()
+        typeof callback === 'function' && callback(modelRef)
+        resolve()
+      })
+    },
+    closed: () => resetFormState()
+  })
+}

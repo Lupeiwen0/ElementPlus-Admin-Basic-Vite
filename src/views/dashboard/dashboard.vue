@@ -12,7 +12,7 @@
 
     <p>
       <el-icon color="#409EFF" :size="28">
-        <switch-button />
+        <CoffeeCup />
       </el-icon>
     </p>
 
@@ -38,15 +38,12 @@ export default {
 </script>
 
 <script setup>
-import { ref, watchEffect } from 'vue'
-import { SwitchButton } from '@element-plus/icons'
+import { ref } from 'vue'
+import { CoffeeCup } from '@element-plus/icons'
 import { UploadFile } from '@/components'
 
 const fileList = ref([])
 
-watchEffect(() => {
-  console.log('fileList: ', fileList.value);
-})
 </script>
 
 <style>

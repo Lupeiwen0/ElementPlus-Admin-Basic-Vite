@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown placement="bottom-end" trigger="click" @command="handleCommand($event)">
+  <el-dropdown trigger="click" @command="handleCommand($event)">
     <span class="account-avatar">
       <el-avatar size="small" :src="currentUser.avatar" class="avatar__view" />
       <span class="user__name">{{ currentUser.name || '来自星星的你~' }}</span>
@@ -7,7 +7,7 @@
     </span>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item command="1" icon="el-icon-user">修改信息</el-dropdown-item>
+        <el-dropdown-item command="1" icon="el-icon-edit">修改信息</el-dropdown-item>
         <el-dropdown-item command="2" icon="el-icon-user">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </template>
