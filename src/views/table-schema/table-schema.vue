@@ -168,7 +168,6 @@ const columns = [
 // 加载数据
 const loadData = parameter => {
   return getTableList(Object.assign({}, queryInfo.value, parameter)).then(res => {
-    console.log(res.data);
     return res.data
   })
 }

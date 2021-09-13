@@ -21,12 +21,30 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { TabsView, GlobalHeader, GlobalFooter, GlobalLogo, NavMenu } from './components'
+import { debounce } from 'lodash'
 
 const collapsed = ref(false)
-
 const asideWidth = computed(() => collapsed.value ? '65px' : '240px')
+
+/**
+ * 浏览器宽度小雨1000 时自动折叠左侧菜单
+ */
+const autoChangeCollapsed = debounce(function () {
+  const windowClintWidth = document.documentElement.clientWidth;
+  if (windowClintWidth < 1000) collapsed.value = true
+}, 600, { leading: true })
+
+onMounted(() => {
+  autoChangeCollapsed()
+  window.addEventListener('resize', autoChangeCollapsed)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', autoChangeCollapsed)
+})
+
 </script>
 
 <style lang="scss" scoped>

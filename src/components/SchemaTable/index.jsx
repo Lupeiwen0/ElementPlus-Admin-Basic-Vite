@@ -219,18 +219,20 @@ export default {
     getTableScrollHeight: debounce(
       function () {
         this.$nextTick(() => {
+          const windowClintHeight = document.documentElement.clientHeight;
           const tableRect = document
             .querySelector(".table-wrapper")
             ?.getBoundingClientRect();
           const footerRect = document
             .querySelector(".el-footer")
             .getBoundingClientRect();
-          this.autoScrollHeight = `calc(100vh - ${
-            tableRect.top + footerRect.height + 52
-          }px)`;
+          // 52 是 分页器高度
+          this.autoScrollHeight = `${
+            windowClintHeight - tableRect.top - footerRect.height - 52
+          }px`;
         });
       },
-      800,
+      600,
       { leading: true }
     ),
   },
