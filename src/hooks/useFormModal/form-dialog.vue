@@ -1,5 +1,5 @@
 <template>
-  <ElDialog v-model:model-value="visible" @closed="closedHandler">
+  <ElDialog custom-class="hooks__form__modal" v-model:model-value="visible" @closed="closedHandler">
     <SchemaForm
       v-bind="formAttr"
       :ref="setDynamicForm"
@@ -9,7 +9,7 @@
     />
     <template #footer>
       <div class="form__dialog__footer">
-        <el-button size="small" type="success" @click="confirmHandler">确认</el-button>
+        <el-button size="small" type="success" :loading="confirmLoading" @click="confirmHandler">确认</el-button>
         <el-button style="margin-right: 16px;" size="small" type="primary" @click="cancelHandler">取消</el-button>
       </div>
     </template>
@@ -17,9 +17,9 @@
 </template>
   
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { SchemaForm } from '@/components'
-import { ElDialog, ElButton } from 'element-plus'
+import { ElDialog, ElButton, ElLoading } from 'element-plus'
 
 const props = defineProps({
   remove: {
@@ -53,6 +53,10 @@ const props = defineProps({
   }
 },
 )
+
+let FormLoadingInstance = null;
+
+
 // 表单 ref
 const dynamicForm = ref(null)
 const setDynamicForm = el => dynamicForm.value = el
@@ -64,7 +68,8 @@ const confirmHandler = () => {
   confirmLoading.value = true
   dynamicForm.value?.validate()
     .then(async (res) => {
-      await (props.handleOk && props.handleOk(dynamicForm.value?.fields)).finally(() => (confirmLoading.value = false))
+      await (props.handleOk && props.handleOk(dynamicForm.value?.fields))
+      confirmLoading.value = false
       visible.value = false
     })
     .catch((err) => {
@@ -78,6 +83,20 @@ const closedHandler = () => {
   props.remove()
   props.closed && props.closed()
 }
+
+watch(() => confirmLoading.value, (newVal) => {
+  if (newVal) {
+    if (FormLoadingInstance) return;
+    FormLoadingInstance = ElLoading.service({
+      target: ".hooks__form__modal .el-dialog__body",
+      background: "rgba(255,255,255,0.4)",
+    });
+  } else {
+    // 以服务的方式调用的 Loading 需要异步关闭
+    FormLoadingInstance.close();
+    FormLoadingInstance = null;
+  }
+})
 
 </script>
 

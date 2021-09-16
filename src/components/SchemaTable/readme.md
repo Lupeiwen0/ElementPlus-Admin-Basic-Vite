@@ -7,7 +7,8 @@ interface parameter {
 }
 
 interface tableColumnsItemSlots {
-  customRender: String // 模板插槽名
+  customRender?: String // 内容模板插槽名
+  customHeader?: String // 自定义表头插槽名
 }
 
 interface tableColumnsItem {
@@ -58,6 +59,9 @@ interface props {
     @filter-change="onFilterChange"
     @row-click="onRowClick"
   >
+    <template #actionHeader>
+        <el-input size="mini" placeholder="请输入关键字"></el-input>
+      </template>
     <template #action="scope">
       <el-button type="text" @click.stop="editHandler(scope.row)" >编辑</el-button>
       <el-divider direction="vertical"></el-divider>
@@ -162,7 +166,7 @@ const columns = [
     label: "操作",
     prop: "gender",
     align: "center",
-    slots: { customRender: "action" },
+    slots: { customRender: "action", customHeader: 'actionHeader' },
   },
 ];
 // 加载数据

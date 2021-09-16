@@ -222,15 +222,18 @@ export const showFormModal = (params, callback) => {
   useFormModal({
     title: params.title,
     width: 1200,
+    closeOnClickModal: false,
     formAttr: { labelWidth: 100, },
     formSchema: getFormSchema(),
     fields: params.fields,
     rules: FormState.rules,
     handleOk: (modelRef) => {
       return new Promise(resolve => {
-        resetFormState()
-        typeof callback === 'function' && callback(modelRef)
-        resolve()
+        setTimeout(() => {
+          resetFormState()
+          typeof callback === 'function' && callback(modelRef)
+          resolve()
+        }, 2000);
       })
     },
     closed: () => resetFormState()
