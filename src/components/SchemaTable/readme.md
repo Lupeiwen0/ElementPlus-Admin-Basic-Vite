@@ -18,7 +18,7 @@ interface tableColumnsItem {
   align?: String // left | center | right
   fixed?: Boolean
   showOverflowTooltip?: Boolean
-  slots: tableColumnsItemSlots
+  slots?: tableColumnsItemSlots
 }
 
 interface sourceData {
@@ -34,13 +34,11 @@ interface props {
   rowSelection?: (selection:any) => void
   expand?: Boolean
   index?:Boolean
-  autoHeight: Boolean
+  autoHeight?: Boolean
   fixed?: Sting[] // | index | selection | expand
   showPagination? Boolean
   pagination?: ElPagination // ElPagination props
 }
-
-
 ```
 
 ```html

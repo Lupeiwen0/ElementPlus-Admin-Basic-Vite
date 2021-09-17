@@ -46,13 +46,33 @@ export default {
 </script>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { SchemaTable, SchemaMenuBar, BasicCard } from '@/components'
-import { cloneDeep } from 'lodash'
-import { ElMessage } from 'element-plus'
-import { getTableList } from '@/api/table-list'
-// 引入表单配置及方法
-import { FormState, showFormModal } from './schema-form'
+import { FormState } from './schema-form'
+import { useSchemaTable } from './schema-table'
+
+// 表格 ref
+const STableRef = ref(null)
+const setSchemaTableRef = (el) => STableRef.value = el
+// 搜索数据
+const queryInfo = reactive({}) 
+// 选中行数据
+const selectedRows = ref([]) 
+
+// table
+const {
+  columns,
+  loadData,
+  onSelectChange,
+  expandHandler,
+  onFilterChange,
+  onRowClick,
+  editHandler,
+  delHandler,
+  addHandler,
+  restTable,
+  initHandler
+} = useSchemaTable({ FormState, STableRef, queryInfo, selectedRows })
 
 /**
  * 菜单按钮
@@ -64,7 +84,7 @@ const barList = ref([
       type: 'primary',
       icon: 'el-icon-circle-plus-outline'
     },
-    targetMethod: () => addhandler()
+    targetMethod: () => addHandler()
   },
   {
     label: '重 置',
@@ -84,132 +104,4 @@ const barList = ref([
   }
 ])
 
-// 表格 ref
-const STableRef = ref(null)
-const setSchemaTableRef = (el) => STableRef.value = el
-
-const queryInfo = reactive({}) // 搜索数据
-const selectedRows = ref([]) // 选中行数据
-// 表格列 配置项
-const columns = [
-  {
-    width: 50,
-    label: 'id',
-    prop: 'id',
-    align: 'center',
-    fixed: true
-  }, {
-    width: 80,
-    label: '姓名',
-    prop: 'name',
-    align: 'center'
-  }, {
-    width: 80,
-    label: '性别',
-    prop: 'gender',
-    align: 'center',
-  }, {
-    width: 80,
-    label: '年龄',
-    prop: 'age',
-    align: 'center'
-  }, {
-    width: 80,
-    label: '身高',
-    prop: 'height',
-    align: 'center',
-  }, {
-    width: 120,
-    label: '出生日期',
-    prop: 'birthday',
-    align: 'center',
-  }, {
-    width: 120,
-    label: '用餐时间',
-    prop: 'eatDinnerTime',
-    align: 'center',
-  }, {
-    width: 120,
-    label: '上班时间',
-    prop: 'workingTime',
-    align: 'center',
-  }, {
-    width: 80,
-    label: '是否单身',
-    prop: 'single',
-    align: 'center',
-  }, {
-    width: 120,
-    label: '有无恋爱经验',
-    prop: 'loveHistory',
-    align: 'center',
-  }, {
-    width: 120,
-    label: '主要经济来源',
-    prop: 'occupation',
-    align: 'center',
-  }, {
-    label: '简介',
-    prop: 'desc',
-    align: 'center',
-    showOverflowTooltip: true
-  }, {
-    width: 150,
-    fixed: 'right',
-    label: '操作',
-    prop: 'gender',
-    align: 'center',
-    slots: { customRender: 'action', customHeader: 'actionHeader' },
-  }
-]
-// 加载数据
-const loadData = parameter => {
-  return getTableList(Object.assign({}, queryInfo, parameter)).then(res => {
-    return res.data
-  })
-}
-
-// 新增事件
-const addhandler = () => {
-  showFormModal({ title: '新 增', fields: FormState.fileds })
-}
-
-// 编辑事件
-const editHandler = (row) => {
-  FormState.fileds = cloneDeep(row)
-  showFormModal(
-    { title: '编 辑', fields: FormState.fileds },
-    () => {
-      ElMessage.success('操作成功')
-      STableRef.value.refresh()
-    }
-  )
-}
-// 删除事件
-const delHandler = (row) => {
-  console.log('delHandler: ', row)
-}
-// 重置事件
-const restTable = () => {
-  STableRef.value.refresh()
-}
-// 初始化选中
-const initHandler = () => {
-  const list = [{ id: 102 }, { id: 106 }]
-  STableRef.value.initRowSelection(list)
-}
-
-const expandHandler = (expandedRows, expanded) => {
-  console.log('expandHandler', { expandedRows, expanded });
-}
-const onSelectChange = (_selectedRows) => {
-  selectedRows.value = _selectedRows
-  console.log('onSelectChange', selectedRows.value);
-}
-const onFilterChange = (filters) => {
-  console.log('onFilterChange', filters);
-}
-const onRowClick = (row) => {
-  STableRef.value.toggleRowSelection(row)
-}
 </script>

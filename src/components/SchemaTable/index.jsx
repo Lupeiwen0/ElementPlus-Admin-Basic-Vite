@@ -19,9 +19,9 @@ export default {
           pageSize: 10,
           total: 0,
           layout: "total,sizes,prev,pager,next,jumper",
-          pageSizes: [10, 20, 30, 40, 50, 100],
+          pageSizes: [5, 10, 20, 30, 40, 50],
           background: true,
-          hideOnSinglePage: true,
+          hideOnSinglePage: false, // 仅有一页时是否隐藏分页
         },
         this.pagination
       ),

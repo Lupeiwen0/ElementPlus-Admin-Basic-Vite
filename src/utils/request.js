@@ -6,19 +6,20 @@ import { Loading } from '@/components/PageLoading'
 
 // 将axios 二次封装
 // 每个实例的拦截器和其他人无关 ，如果使用全局的实例 那么给每次请求单独配置拦截器就做不到
-let flag = false
+let redirectFlag = false // 重定向到登录节流阀
 const loadingDelay = 600 // loading延时
-const pending = []
+const pending = [] // pending状态的请求集合
+let loadingCounter = 0 // 请求loading计数器
+let loadingInstance = null // loading 实例
 
 class HttpRequest {
   constructor() {
     // 可以增加实例属性 后台接口的路径  开发模式和生产模式不一样 在config里新建index.js进行配置
     this.baseURL = import.meta.env.VITE_APP_API_URL // 默认地址
     this.timeout = import.meta.env.VITE_APP_TIME_OUT // 请求超时时间
-    this.loadingInstance = null
   }
   // 创建单独的拦截器
-  setInterceptors (instance, options) {
+  setInterceptors (instance) {
     let timer = null
     instance.interceptors.request.use(config => {
       // 一般增加一些token属性等
@@ -35,9 +36,11 @@ class HttpRequest {
 
       const { loadingEl, loadingTitle } = config
       if (loadingEl) {
-        // 增加loading,并进行 ${loadingDelay} ms延时
+        // loading计数 +1
+        loadingCounter++
+        // ${loadingDelay} ms延时后，开启loading
         timer = setTimeout(() => {
-          this.loadingInstance = Loading.service({ text: loadingTitle })
+          loadingInstance = Loading.service({ text: loadingTitle })
         }, loadingDelay)
       }
       // 注册取消请求 cancelToken
@@ -49,10 +52,15 @@ class HttpRequest {
     })
     instance.interceptors.response.use(
       res => {
-        // 取消loading的加载
-        clearTimeout(timer)
-        // 关闭loading
-        this.loadingInstance && this.loadingInstance.close()
+        const { loadingEl } = res.config
+        if (loadingEl) {
+          // loading计数 -1
+          loadingCounter--
+          // 取消loading的加载
+          clearTimeout(timer)
+          // 关闭loading
+          loadingCounter <= 0 && loadingInstance && loadingInstance.close()
+        }
 
         // 服务返回的结果都会放到data中
         const { data } = res
@@ -65,11 +73,11 @@ class HttpRequest {
               return Promise.resolve(res.data)
             case 401: // token无效
               // 退出登录 重定向到登录页
-              if (!flag) {
+              if (!redirectFlag) {
                 ElMessage.error(data.message)
-                flag = true
+                redirectFlag = true
                 setTimeout(() => {
-                  flag = false
+                  redirectFlag = false
                 }, 3000)
               }
               // 退出登录 重定向到登录页
@@ -97,7 +105,7 @@ class HttpRequest {
         // 取消延时loading的加载
         clearTimeout(timer)
         // 关闭loading
-        this.loadingInstance && this.loadingInstance.close()
+        loadingInstance && loadingInstance.close()
         //中断请求
         while (pending.length > 0) {
           pending.pop()('请求中断')
@@ -106,13 +114,14 @@ class HttpRequest {
       }
     )
   }
+  // 合并参数
   mergeOptions (options) {
     // 合并选项
     return { baseURL: this.baseURL, timeout: this.timeout, ...options }
   }
   request = options => {
     const instance = axios.create() // 创建axios实例
-    this.setInterceptors(instance, options) // 创建单独的拦截器
+    this.setInterceptors(instance) // 创建单独的拦截器
     const opts = this.mergeOptions(options) // 合并选项
     return instance(opts) // 单独拦截器的配置项
   }
@@ -150,17 +159,6 @@ const http = new HttpRequest()
 
 export default {
   install (Vue) {
-    Vue.mixin({
-      data () {
-        return {
-          cancelRequest: []
-        }
-      },
-      destroyed () {
-        // 组件销毁，取消请求
-        this.$data.cancelRequest.forEach(v => v.cancel('取消请求'))
-      }
-    })
     Vue.prototype.$axios = http.request
     Vue.prototype.$get = http.get
     Vue.prototype.$post = http.post
