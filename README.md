@@ -21,7 +21,7 @@
 node version >= 12.0.0
 
 ```
- yarn add
+ yarn
 ```
 
 #### 使用说明

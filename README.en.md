@@ -23,7 +23,7 @@ Mock request data using mock
 node version >= 12.0.0
 
 ```
- yarn add
+ yarn
 ```
 
 #### Instructions
