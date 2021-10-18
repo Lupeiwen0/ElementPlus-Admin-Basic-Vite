@@ -3,6 +3,7 @@ import { builder, getBody } from '../util'
 
 const tableList = (_params) => {
   const params = getBody(_params)
+  console.log('mock: ',params);
   const mockData = {
     pageSize: params.pageSize,
     currentPage: params.currentPage || 1,

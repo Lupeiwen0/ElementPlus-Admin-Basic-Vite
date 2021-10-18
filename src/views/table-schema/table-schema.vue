@@ -4,6 +4,13 @@
       <el-button type="text">more</el-button>
     </template>
 
+    <SchemaSelector
+      v-model:fields="queryInfo"
+      :form-schema="selectorDynamicForm"
+      :label-width="40"
+      @confrim="selectorClickHandler"
+    ></SchemaSelector>
+
     <SchemaMenuBar :barList="barList"></SchemaMenuBar>
 
     <SchemaTable
@@ -21,7 +28,7 @@
       @row-click="onRowClick"
     >
       <template #actionHeader>
-        <el-input size="mini" placeholder="请输入关键字" v-model="queryInfo.action"></el-input>
+        <span>操 作</span>
       </template>
       <template #action="scope">
         <el-button type="text" @click.stop="editHandler(scope.row)">编辑</el-button>
@@ -47,7 +54,7 @@ export default {
 
 <script setup>
 import { ref, reactive } from 'vue'
-import { SchemaTable, SchemaMenuBar, BasicCard } from '@/components'
+import { SchemaTable, SchemaMenuBar, SchemaSelector, BasicCard } from '@/components'
 import { FormState } from './schema-form'
 import { useSchemaTable } from './schema-table'
 
@@ -55,9 +62,10 @@ import { useSchemaTable } from './schema-table'
 const STableRef = ref(null)
 const setSchemaTableRef = (el) => STableRef.value = el
 // 搜索数据
-const queryInfo = reactive({}) 
+const a = {}
+const queryInfo = ref(a)
 // 选中行数据
-const selectedRows = ref([]) 
+const selectedRows = ref([])
 
 // table
 const {
@@ -73,6 +81,63 @@ const {
   restTable,
   initHandler
 } = useSchemaTable({ FormState, STableRef, queryInfo, selectedRows })
+
+/**
+ * 搜索
+ */
+const selectorDynamicForm = [
+  {
+    field: 'name',
+    type: 'input',
+    props: { label: '姓名' },
+    layout: { xs: 24, sm: 12, md: 8 }
+  },
+  {
+    field: 'gender',
+    type: 'select',
+    props: { label: '性别' },
+    layout: { xs: 24, sm: 12, md: 8 },
+    options: [
+      { label: '女', value: 0, customLabel: '0-女' },
+      { label: '男', value: 1 }
+    ]
+  },
+  {
+    field: 'age',
+    type: 'input',
+    props: { label: '年龄' },
+    layout: { xs: 24, sm: 12, md: 8 },
+    attr: {
+      controlsPosition: 'right',
+      placeholder: '请输入'
+    }
+  },
+  {
+    field: 'height',
+    type: 'input-number',
+    props: { label: '身高' },
+    layout: { xs: 24, sm: 12, md: 8 },
+    attr: {
+      controlsPosition: 'right',
+      placeholder: '请输入'
+    }
+  },
+  {
+    field: 'birthday',
+    type: 'date-picker',
+    props: { label: '生日' },
+    layout: { xs: 24, sm: 12, md: 8 },
+    attr: {
+      type: 'daterange',
+      format: 'YYYY-MM-DD HH:mm',
+      valueFormat: 'YYYY-MM-DD HH:mm',
+      placeholder: '请选择'
+    }
+  },
+]
+const selectorClickHandler = ({ type, data }) => {
+  restTable()
+}
 
 /**
  * 菜单按钮

@@ -294,12 +294,12 @@ export default {
         const slots = {};
         if (item.slots.customRender) {
           slots["default"] = (props) => {
-            return this.$slots[item.slots.customRender](props);
+            return this.$slots[item.slots.customRender] && this.$slots[item.slots.customRender](props);
           };
         }
         if (item.slots.customHeader) {
           slots["header"] = (props) => {
-            return this.$slots[item.slots.customHeader](props);
+            return this.$slots[item.slots.customHeader] && this.$slots[item.slots.customHeader](props);
           };
         }
         return h(TableColumn, { ...item }, slots);

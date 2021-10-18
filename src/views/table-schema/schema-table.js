@@ -4,8 +4,9 @@ import { ElMessage } from 'element-plus'
 import { getTableList } from '@/api/table-list'
 // 引入表单配置及方法
 import { showFormModal } from './schema-form'
+import { isRef, unref, toRaw } from 'vue'
 
-export const useSchemaTable = ({FormState, STableRef, queryInfo, selectedRows}) => {
+export const useSchemaTable = ({ FormState, STableRef, queryInfo, selectedRows }) => {
   return {
     // 表格列 配置项
     columns: [
@@ -81,7 +82,12 @@ export const useSchemaTable = ({FormState, STableRef, queryInfo, selectedRows}) 
     ],
     // 加载数据
     loadData: parameter => {
-      return getTableList(Object.assign({}, queryInfo, parameter)).then(res => {
+      // 这里可以对搜索参数做一些格式化的操作
+      const newQueryInfo = cloneDeep(isRef(queryInfo) ? unref(queryInfo) : toRaw(queryInfo))
+      if (newQueryInfo.birthday) {
+        newQueryInfo.birthday = newQueryInfo.birthday.join(',')
+      }
+      return getTableList(Object.assign({}, newQueryInfo, parameter)).then(res => {
         return res.data
       })
     },

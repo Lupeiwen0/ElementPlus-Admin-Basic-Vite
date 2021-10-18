@@ -4,12 +4,17 @@
       <template v-for="formItem in localFormSchema">
         <el-col v-bind="{ ...formItem.layout }">
           <el-form-item v-bind="{ ...formItem.props }" :prop="formItem.field">
-            <component
-              :is="getComponent(formItem.type)"
-              :formItem="formItem"
-              :attr="formItem.attr"
-              v-model:modelValue="fields[formItem.field]"
-            ></component>
+            <template v-if="formItem.type !== 'slot'">
+              <component
+                :is="getComponent(formItem.type)"
+                :formItem="formItem"
+                :attr="formItem.attr"
+                v-model:modelValue="fields[formItem.field]"
+              ></component>
+            </template>
+            <template v-else>
+              <slot :name="formItem.slotName" :formItem="formItem"></slot>
+            </template>
           </el-form-item>
         </el-col>
       </template>
@@ -44,11 +49,11 @@ export default {
       type: Object
     }
   },
-  setup(props, { emit }) {
+  setup (props, { emit }) {
     // form ref
     const SchemaFormRef = ref(null)
     const setSchemaFormRef = el => SchemaFormRef.value = el
-    
+
     // 过滤本地显示数据
     const localFormSchema = props.formSchema.filter(item => !item.hidden)
     // 预设组件索引
