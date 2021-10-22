@@ -28,7 +28,7 @@
       @row-click="onRowClick"
     >
       <template #actionHeader>
-        <span>操 作</span>
+        <el-tag>操 作</el-tag>
       </template>
       <template #action="scope">
         <el-button type="text" @click.stop="editHandler(scope.row)">编辑</el-button>
@@ -100,7 +100,10 @@ const selectorDynamicForm = [
     options: [
       { label: '女', value: 0, customLabel: '0-女' },
       { label: '男', value: 1 }
-    ]
+    ],
+    attr: {
+      onChange: () => restTable()
+    }
   },
   {
     field: 'age',
@@ -150,14 +153,6 @@ const barList = ref([
       icon: 'el-icon-circle-plus-outline'
     },
     targetMethod: () => addHandler()
-  },
-  {
-    label: '重 置',
-    attr: {
-      type: 'danger',
-      icon: 'el-icon-refresh-left'
-    },
-    targetMethod: () => restTable()
   },
   {
     label: '选 中',

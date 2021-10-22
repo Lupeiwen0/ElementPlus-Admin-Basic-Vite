@@ -8,13 +8,11 @@
         </el-col>
       </el-row>
     </el-col>
-    <div class="right-avatar">
-      <el-row type="flex" justify="end">
-        <el-col style="width: max-content;">
-          <AvatarDropdown></AvatarDropdown>
-        </el-col>
-      </el-row>
-    </div>
+    <el-col :span="4">
+      <div class="right-avatar">
+        <AvatarDropdown></AvatarDropdown>
+      </div>
+    </el-col>
   </el-row>
 </template>
 
@@ -57,5 +55,10 @@ const changeCollapsed = () => {
 
 .trigger:hover {
   color: #1890ff;
+}
+
+.right-avatar {
+  display: flex;
+  justify-content: end;
 }
 </style>

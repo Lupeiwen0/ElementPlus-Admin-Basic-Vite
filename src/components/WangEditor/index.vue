@@ -276,4 +276,11 @@ export default {
   z-index: 99;
   color: #1890ff;
 }
+
+:deep(.w-e-text) {
+  padding: 10px;
+  p {
+    margin: 0;
+  }
+}
 </style>

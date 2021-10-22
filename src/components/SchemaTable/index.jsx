@@ -240,6 +240,45 @@ export default {
       600,
       { leading: true }
     ),
+    // 获取table columns
+    getTableColumns(item) {
+      if (Array.isArray(item.children) && item.children.length) {
+        const attrs = {};
+        Object.keys(item).forEach((key) => {
+          if (key === "children" || key=== 'prop') return;
+          attrs[key] = item[key];
+        });
+        return (
+          <el-table-column {...attrs}>
+            {item.children.map((son) => this.getTableColumns(son))}
+          </el-table-column>
+        );
+      } else {
+        if (item.slots) {
+          const TableColumn = resolveComponent("ElTableColumn");
+          const slots = {};
+          if (item.slots.customRender) {
+            slots["default"] = (props) => {
+              return (
+                this.$slots[item.slots.customRender] &&
+                this.$slots[item.slots.customRender](props)
+              );
+            };
+          }
+          if (item.slots.customHeader) {
+            slots["header"] = (props) => {
+              return (
+                this.$slots[item.slots.customHeader] &&
+                this.$slots[item.slots.customHeader](props)
+              );
+            };
+          }
+          return h(TableColumn, { ...item }, slots);
+        } else {
+          return <el-table-column {...item}></el-table-column>;
+        }
+      }
+    }
   },
   render() {
     const props = {};
@@ -288,25 +327,7 @@ export default {
     }
 
     // 表格Columns
-    const tableColumns = localColumns.map((item) => {
-      if (item.slots) {
-        const TableColumn = resolveComponent("ElTableColumn");
-        const slots = {};
-        if (item.slots.customRender) {
-          slots["default"] = (props) => {
-            return this.$slots[item.slots.customRender] && this.$slots[item.slots.customRender](props);
-          };
-        }
-        if (item.slots.customHeader) {
-          slots["header"] = (props) => {
-            return this.$slots[item.slots.customHeader] && this.$slots[item.slots.customHeader](props);
-          };
-        }
-        return h(TableColumn, { ...item }, slots);
-      } else {
-        return <el-table-column {...item}></el-table-column>;
-      }
-    });
+    const tableColumns = localColumns.map((item) => this.getTableColumns(item));
 
     // 表格
     const table = (

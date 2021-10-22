@@ -13,10 +13,10 @@
     ></SchemaForm>
     <el-row type="flex" :gutter="10" justify="end" style="margin-bottom: 20px;">
       <el-col :span="2">
-        <el-button type="primary" @click="restHandler">重置</el-button>
+        <el-button type="primary" size="small" @click="restHandler">重置</el-button>
       </el-col>
       <el-col :span="2">
-        <el-button type="success" @click="confirmHandler">确认</el-button>
+        <el-button type="success" size="small" @click="confirmHandler">确认</el-button>
       </el-col>
     </el-row>
   </BasicCard>

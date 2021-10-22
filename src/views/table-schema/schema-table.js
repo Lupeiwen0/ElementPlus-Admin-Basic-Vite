@@ -22,10 +22,38 @@ export const useSchemaTable = ({ FormState, STableRef, queryInfo, selectedRows }
         prop: 'name',
         align: 'center'
       }, {
-        width: 80,
+        width: 160,
         label: '性别',
         prop: 'gender',
         align: 'center',
+        children: [
+          {
+            width: 80,
+            label: '男',
+            prop: 'gender',
+            align: 'center',
+            children: [
+              {
+                width: 80,
+                label: '18^',
+                prop: 'gender',
+                align: 'center',
+              },
+              {
+                width: 80,
+                label: '18_',
+                prop: 'gender',
+                align: 'center',
+              },
+            ]
+          },
+          {
+            width: 80,
+            label: '女',
+            prop: 'gender',
+            align: 'center',
+          },
+        ]
       }, {
         width: 80,
         label: '年龄',
